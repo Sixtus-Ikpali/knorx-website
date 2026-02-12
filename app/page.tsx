@@ -9,7 +9,6 @@ export default function Home() {
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [year, setYear] = useState<number>(2026);
-  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -46,14 +45,11 @@ export default function Home() {
       setSuccess(true);
       form.reset();
     } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError(err.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
   }
-
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-  const closeMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <main style={styles.main}>
@@ -67,116 +63,121 @@ export default function Home() {
           .mobile-toggle { display: none !important; }
         }
 
-        /* KEYFRAMES FOR ORBIT ANIMATION */
-        @keyframes orbit {
-          from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+        /* ORBIT ANIMATIONS */
+        @keyframes orbit-inner {
+          from { transform: rotate(0deg) translateX(75px) rotate(0deg); }
+          to   { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
         }
-        @keyframes orbit-reverse {
+        @keyframes orbit-mid {
           from { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
           to   { transform: rotate(0deg) translateX(110px) rotate(0deg); }
         }
-        @keyframes pulse-ring {
-          0% { transform: scale(0.8); opacity: 0.5; }
-          50% { transform: scale(1.2); opacity: 0.2; }
-          100% { transform: scale(0.8); opacity: 0.5; }
+        @keyframes orbit-outer {
+          from { transform: rotate(0deg) translateX(145px) rotate(0deg); }
+          to   { transform: rotate(360deg) translateX(145px) rotate(-360deg); }
+        }
+        @keyframes pulse-glow {
+          0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
+          50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 50px #3a7ca5; }
+          100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
         }
       `}</style>
 
+      {/* HEADER */}
       <header style={styles.header}>
         <div style={styles.nav}>
           <div style={styles.logoContainer}>
             <span style={styles.logoText}>KNORX</span>
           </div>
-          
           <div className="desktop-nav" style={styles.navLinks}>
             <a href="#about" style={styles.link}>About</a>
             <a href="#services" style={styles.link}>Services</a>
             <a href="#contact" style={styles.navButton}>Get Started</a>
           </div>
-
-          <button className="mobile-toggle" onClick={toggleMenu} style={styles.hamburgerButton} aria-label="Toggle menu">
-            {isMobileMenuOpen ? (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            )}
+          <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} style={styles.hamburgerButton}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {isMobileMenuOpen ? <path d="M18 6L6 18M6 6l12 12"/> : <path d="M3 12h18M3 6h18M3 18h18"/>}
+            </svg>
           </button>
         </div>
       </header>
 
+      {/* MOBILE MENU */}
       {isMobileMenuOpen && (
         <div style={styles.mobileMenu}>
-          <div style={styles.mobileMenuLinks}>
-            <a href="#about" onClick={closeMenu} style={styles.mobileLink}>About</a>
-            <a href="#services" onClick={closeMenu} style={styles.mobileLink}>Services</a>
-            <a href="#contact" onClick={closeMenu} style={styles.mobileButton}>Get Started</a>
-          </div>
+          <a href="#about" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileLink}>About</a>
+          <a href="#services" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileLink}>Services</a>
+          <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileButton}>Get Started</a>
         </div>
       )}
 
-      {/* HERO SECTION WITH ANIMATION */}
+      {/* HERO SECTION */}
       <section style={styles.hero}>
         <h1 style={styles.heading}>Knowledge-Driven Execution for Modern Businesses</h1>
         <p style={styles.subtext}>We design and deliver knowledge-driven digital systems that power operational excellence.</p>
         
-        {/* TECH ORBIT ANIMATION COMPONENT */}
+        {/* ENHANCED TECH ORBIT COMPONENT */}
         <div style={styles.orbitContainer}>
-          <div style={styles.centralNode}>
-             <div style={styles.pulseRing}></div>
+          <div style={styles.centralNode}></div>
+          
+          {/* Node 1: Code (Inner) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 6s linear infinite'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
           </div>
-          {/* Orbiting Icons/Nodes */}
-          <div style={{...styles.orbitNode, animation: 'orbit 8s linear infinite'}}>
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+          
+          {/* Node 2: Cloud (Mid) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-mid 10s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
           </div>
-          <div style={{...styles.orbitNode, animation: 'orbit-reverse 12s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}>
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          
+          {/* Node 3: Database (Mid) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-mid 12s linear infinite', animationDelay: '-5s', backgroundColor: 'rgba(58, 124, 165, 0.2)'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
           </div>
-          <div style={{...styles.orbitNode, animation: 'orbit 15s linear infinite', animationDelay: '-2s'}}>
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1V11a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+
+          {/* Node 4: Security (Outer) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-outer 18s linear infinite'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+
+          {/* Node 5: AI (Outer) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-outer 22s linear infinite', animationDelay: '-11s', backgroundColor: 'rgba(58, 124, 165, 0.5)'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+
+          {/* Node 6: Gear (Inner) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 8s linear infinite', animationDelay: '-3s'}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1V11a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </div>
         </div>
 
-        <div style={{ marginTop: '40px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
+        <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
           <a href="#contact" style={styles.heroButton}>Work with Us</a>
           <a href="#services" style={styles.heroSecondaryButton}>View Services</a>
         </div>
       </section>
 
-      {/* REST OF THE SECTIONS REMAIN THE SAME */}
+      {/* ABOUT SECTION */}
       <section id="about" style={styles.aboutSection}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>About Us</h2>
           <div style={styles.aboutContent}>
-            <p style={styles.aboutText}>
-              <strong>Knorx Technologies</strong> is a remote-first technology solutions provider. 
-              We help organizations design, automate, and optimize their business operations using modern, scalable technology.
-            </p>
-            <p style={styles.aboutText}>
-              We specialize in building next-generation digital solutions that are practical, secure, and aligned with real business outcomes.
-            </p>
+            <p style={styles.aboutText}><strong>Knorx Technologies</strong> is a remote-first technology solutions provider. We help organizations design, automate, and optimize business operations using modern, scalable technology.</p>
+            <p style={styles.aboutText}>Our approach combines deep domain understanding with knowledge-driven execution, ensuring every solution is optimized for performance, reliability, and growth.</p>
           </div>
         </div>
       </section>
 
+      {/* SERVICES SECTION */}
       <section id="services" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Our Services</h2>
           <div style={styles.grid}>
-            {services.map((service, index) => (
-              <div key={index} style={styles.card}>
-                <h3 style={styles.cardTitle}>{service.title}</h3>
+            {services.map((s, i) => (
+              <div key={i} style={styles.card}>
+                <h3 style={styles.cardTitle}>{s.title}</h3>
                 <ul style={styles.list}>
-                  {service.items.map((item, i) => (
-                    <li key={i} style={styles.listItem}>• {item}</li>
-                  ))}
+                  {s.items.map((item, idx) => <li key={idx} style={styles.listItem}>• {item}</li>)}
                 </ul>
               </div>
             ))}
@@ -184,6 +185,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CONTACT SECTION */}
       <section id="contact" style={styles.section}>
         <div style={styles.container}>
           <div style={styles.contactContainer}>
@@ -202,53 +204,49 @@ export default function Home() {
         </div>
       </section>
 
-      <footer style={styles.footer}>
-        © {year} KNORX Technologies. All rights reserved.
-      </footer>
+      <footer style={styles.footer}>© {year} KNORX Technologies. All rights reserved.</footer>
     </main>
   );
 }
 
 const services = [
-  { title: 'Digital Platforms & Web Development', items: ['Corporate websites', 'Enterprise web platforms', 'E-commerce systems'] },
-  { title: 'Application Engineering', items: ['Custom web & mobile apps', 'Business automation tools', 'SaaS system development'] },
-  { title: 'Enterprise Systems & Solutions', items: ['ERP implementation', 'Workflow automation', 'Intelligent operational platforms'] },
-  { title: 'Digital Transformation', items: ['Technology strategy', 'Process reengineering', 'End-to-end automation'] },
-  { title: 'Consulting & Knowledge Services', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
+  { title: 'Digital Platforms', items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
+  { title: 'Application Engineering', items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
+  { title: 'Enterprise Systems', items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
+  { title: 'Digital Transformation', items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
+  { title: 'Consulting', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
   main: { fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#0b1c31', color: '#f1f5f9', minHeight: '100vh', scrollBehavior: 'smooth' },
   header: { padding: '15px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, backgroundColor: 'rgba(11, 28, 49, 0.95)', backdropFilter: 'blur(10px)', zIndex: 100 },
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
-  logoContainer: { display: 'flex', alignItems: 'center', gap: '12px' },
-  logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '20px', letterSpacing: '1.5px' },
-  navLinks: { display: 'flex', alignItems: 'center', gap: '30px' },
-  hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer', padding: '5px' },
-  mobileMenu: { position: 'fixed', top: '70px', left: 0, width: '100%', height: 'calc(100vh - 70px)', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: '60px' },
-  mobileMenuLinks: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', width: '100%' },
+  logoContainer: { display: 'flex', alignItems: 'center' },
+  logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '22px', letterSpacing: '1.5px' },
+  navLinks: { gap: '30px', alignItems: 'center' },
+  hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer' },
+  mobileMenu: { position: 'fixed', inset: '70px 0 0 0', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', paddingTop: '60px' },
   mobileLink: { fontSize: '20px', color: '#f1f5f9', textDecoration: 'none' },
   mobileButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 40px', borderRadius: '8px', textDecoration: 'none' },
-  link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px' },
-  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none' },
-  hero: { padding: '100px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
-  heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', margin: '0 auto', lineHeight: 1.15 },
-  subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px', margin: '24px auto 0' },
+  link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px', fontWeight: 500 },
+  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600 },
+  hero: { padding: '120px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
+  heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
+  subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
   
-  /* NEW ANIMATION STYLES */
-  orbitContainer: { position: 'relative', width: '300px', height: '220px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px' },
-  centralNode: { width: '40px', height: '40px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 5, position: 'relative' },
-  pulseRing: { position: 'absolute', width: '100%', height: '100%', borderRadius: '50%', border: '2px solid #3a7ca5', animation: 'pulse-ring 3s ease-out infinite' },
-  orbitNode: { position: 'absolute', width: '30px', height: '30px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)' },
+  /* ORBIT STYLES */
+  orbitContainer: { position: 'relative', width: '320px', height: '320px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' },
+  centralNode: { width: '50px', height: '50px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
+  orbitNode: { position: 'absolute', width: '32px', height: '32px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
   
-  heroButton: { display: 'inline-block', backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 },
-  heroSecondaryButton: { display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none' },
+  heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px' },
+  heroSecondaryButton: { border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontSize: '18px' },
   container: { maxWidth: '1200px', margin: '0 auto' },
-  section: { padding: '80px 20px' },
-  aboutSection: { padding: '80px 20px', backgroundColor: 'rgba(255,255,255,0.02)' },
-  aboutContent: { maxWidth: '800px', lineHeight: '1.8' },
-  aboutText: { marginBottom: '20px', opacity: 0.9 },
-  sectionTitle: { fontSize: 'clamp(28px, 4vw, 32px)', marginBottom: '40px', color: '#3a7ca5' },
+  section: { padding: '100px 20px' },
+  aboutSection: { padding: '100px 20px', backgroundColor: 'rgba(255,255,255,0.02)' },
+  aboutContent: { maxWidth: '800px', lineHeight: '1.8', fontSize: '18px' },
+  aboutText: { marginBottom: '20px' },
+  sectionTitle: { fontSize: '32px', marginBottom: '40px', color: '#3a7ca5', fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' },
   card: { padding: '24px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' },
   cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700 },
@@ -256,8 +254,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   listItem: { marginBottom: '10px' },
   contactContainer: { maxWidth: '600px' },
   form: { display: 'flex', flexDirection: 'column', gap: '16px' },
-  input: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff' },
-  textarea: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', minHeight: '150px' },
+  input: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', outline: 'none' },
+  textarea: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', minHeight: '150px', outline: 'none', fontFamily: 'inherit' },
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
-  footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)' }
+  footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
+
