@@ -210,11 +210,31 @@ export default function Home() {
 }
 
 const services = [
-  { title: 'Digital Platforms', items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
-  { title: 'Application Engineering', items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
-  { title: 'Enterprise Systems', items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
-  { title: 'Digital Transformation', items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
-  { title: 'Consulting', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
+  { 
+    title: 'Digital Platforms', 
+    image: '/digital-platforms.jpg',
+    items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] 
+  },
+  { 
+    title: 'Application Engineering', 
+    image: '/application-engineering.jpg', 
+    items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] 
+  },
+  { 
+    title: 'Enterprise Systems', 
+    image: '/enterprise-systems.jpg', 
+    items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] 
+  },
+  { 
+    title: 'Digital Transformation', 
+    image: '/digital-transformation.jpg', 
+    items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] 
+  },
+  { 
+    title: 'Consulting', 
+    image: '/consulting.jpg', 
+    items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] 
+  }
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
