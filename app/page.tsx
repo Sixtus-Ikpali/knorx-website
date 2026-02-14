@@ -1,7 +1,7 @@
+
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
-// NEW: Import the professional icons
 import { 
   Globe, 
   Cpu, 
@@ -11,7 +11,12 @@ import {
   Code2,
   Cloud,
   Menu,
-  X
+  X,
+  Database,
+  Lock,
+  Settings,
+  ShieldCheck,
+  Server
 } from 'lucide-react';
 
 export default function Home() {
@@ -49,13 +54,11 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-
-      if (!response.ok) throw new Error('Failed to send message.');
-
+      if (!response.ok) throw new Error('Failed');
       setSuccess(true);
       form.reset();
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.');
+      setError('Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -64,6 +67,9 @@ export default function Home() {
   return (
     <main style={styles.main}>
       <style jsx global>{`
+        html {
+          scroll-behavior: smooth; /* Makes the "Live" links slide smoothly */
+        }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-toggle { display: block !important; }
@@ -73,26 +79,24 @@ export default function Home() {
           .mobile-toggle { display: none !important; }
         }
 
-        /* ORBIT ANIMATIONS */
+        /* DYNAMIC ORBIT ANIMATIONS */
         @keyframes orbit-inner {
-          from { transform: rotate(0deg) translateX(75px) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
+          from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+          to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
         }
         @keyframes orbit-mid {
           from { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
           to   { transform: rotate(0deg) translateX(110px) rotate(0deg); }
         }
         @keyframes orbit-outer {
-          from { transform: rotate(0deg) translateX(145px) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(145px) rotate(-360deg); }
+          from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+          to   { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
         }
         @keyframes pulse-glow {
-          0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
-          50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 50px #3a7ca5; }
-          100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
+          0%, 100% { transform: scale(0.9); opacity: 0.5; box-shadow: 0 0 20px #3a7ca5; }
+          50% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 50px #3a7ca5; }
         }
 
-        /* SERVICE CARD HOVER EFFECTS */
         .service-card {
           transition: all 0.3s ease-in-out !important;
           cursor: pointer;
@@ -102,11 +106,6 @@ export default function Home() {
           background-color: rgba(255, 255, 255, 0.08) !important;
           border-color: #3a7ca5 !important;
           box-shadow: 0 10px 30px rgba(58, 124, 165, 0.2);
-        }
-        /* Icon transition */
-        .service-card:hover .icon-container {
-            color: #fff !important;
-            transform: scale(1.1);
         }
       `}</style>
 
@@ -136,17 +135,27 @@ export default function Home() {
         </div>
       )}
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION WITH EXPANDED ORBIT */}
       <section style={styles.hero}>
         <h1 style={styles.heading}>Knowledge-Driven Execution for Modern Businesses</h1>
         <p style={styles.subtext}>We design and deliver knowledge-driven digital systems that power operational excellence.</p>
         
         <div style={styles.orbitContainer}>
+          {/* Core */}
           <div style={styles.centralNode}></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-inner 6s linear infinite'}}><Code2 size={16} color="#fff"/></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-mid 10s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}><Globe size={16} color="#fff"/></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-mid 12s linear infinite', animationDelay: '-5s', backgroundColor: 'rgba(58, 124, 165, 0.2)'}}><Cloud size={16} color="#fff"/></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-outer 18s linear infinite'}}><Zap size={16} color="#fff"/></div>
+          
+          {/* Inner Ring (Fast) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite'}}><Code2 size={14} color="#fff"/></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite', animationDelay: '-2.5s'}}><Lock size={14} color="#fff"/></div>
+          
+          {/* Mid Ring (Counter-Clockwise) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.6)'}}><Globe size={16} color="#fff"/></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', animationDelay: '-4.5s', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}><Database size={16} color="#fff"/></div>
+          
+          {/* Outer Ring (Slow & Large) */}
+          <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite'}}><Cloud size={18} color="#fff"/></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite', animationDelay: '-5s', backgroundColor: 'rgba(58, 124, 165, 0.3)'}}><ShieldCheck size={18} color="#fff"/></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite', animationDelay: '-10s', backgroundColor: 'rgba(58, 124, 165, 0.5)'}}><Settings size={18} color="#fff"/></div>
         </div>
 
         <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
@@ -166,14 +175,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES SECTION - UPDATED WITH LIVE ICONS */}
+      {/* SERVICES SECTION */}
       <section id="services" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Our Services</h2>
           <div style={styles.grid}>
             {services.map((s, i) => (
               <div key={i} className="service-card" style={styles.card}>
-                <div className="icon-container" style={styles.cardImageContainer}>
+                <div style={styles.cardImageContainer}>
                   {s.icon}
                 </div>
                 <h3 style={styles.cardTitle}>{s.title}</h3>
@@ -199,7 +208,6 @@ export default function Home() {
                 {loading ? 'Sending...' : 'Send Message'}
               </button>
               {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully.</p>}
-              {error && <p style={{ color: '#f87171', marginTop: '10px' }}>{error}</p>}
             </form>
           </div>
         </div>
@@ -210,7 +218,6 @@ export default function Home() {
   );
 }
 
-// UPDATED SERVICES WITH LIVE ICONS
 const services = [
   { title: 'Digital Platforms', icon: <Globe size={40} />, items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
   { title: 'Application Engineering', icon: <Cpu size={40} />, items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
@@ -220,7 +227,7 @@ const services = [
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
-  main: { fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#0b1c31', color: '#f1f5f9', minHeight: '100vh', scrollBehavior: 'smooth' },
+  main: { fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#0b1c31', color: '#f1f5f9', minHeight: '100vh' },
   header: { padding: '15px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, backgroundColor: 'rgba(11, 28, 49, 0.95)', backdropFilter: 'blur(10px)', zIndex: 100 },
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
   logoContainer: { display: 'flex', alignItems: 'center' },
@@ -235,9 +242,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   hero: { padding: '120px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
   heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
   subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
-  orbitContainer: { position: 'relative', width: '320px', height: '320px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' },
-  centralNode: { width: '50px', height: '50px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
-  orbitNode: { position: 'absolute', width: '32px', height: '32px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
+  orbitContainer: { position: 'relative', width: '350px', height: '350px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' },
+  centralNode: { width: '60px', height: '60px', backgroundColor: '#3a7ca5', borderRadius: '50%', zCenter: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
+  orbitNode: { position: 'absolute', width: '36px', height: '36px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
   heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px' },
   heroSecondaryButton: { border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontSize: '18px' },
   container: { maxWidth: '1200px', margin: '0 auto' },
@@ -248,10 +255,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: { fontSize: '32px', marginBottom: '40px', color: '#3a7ca5', fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' },
   card: { padding: '24px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' },
-  
-  // ICON STYLES
-  cardImageContainer: { marginBottom: '20px', textAlign: 'left', color: '#3a7ca5', transition: 'all 0.3s ease' },
-  
+  cardImageContainer: { marginBottom: '20px', textAlign: 'left', color: '#3a7ca5' },
   cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700 },
   list: { listStyleType: 'none', padding: 0, opacity: 0.8, fontSize: '14px' },
   listItem: { marginBottom: '10px' },
