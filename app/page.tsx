@@ -81,7 +81,7 @@ export default function Home() {
           100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
         }
 
-        /* NEW: SERVICE CARD HOVER EFFECTS */
+        /* SERVICE CARD HOVER EFFECTS */
         .service-card {
           transition: all 0.3s ease-in-out !important;
           cursor: pointer;
@@ -154,14 +154,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES SECTION - UPDATED WITH CLASSNAME AND ICONS */}
+      {/* SERVICES SECTION */}
       <section id="services" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Our Services</h2>
           <div style={styles.grid}>
             {services.map((s, i) => (
               <div key={i} className="service-card" style={styles.card}>
-                {/* NEW: IMAGE ICON */}
                 <div style={styles.cardImageContainer}>
                   <img src={s.image} alt={s.title} style={styles.cardImage} />
                 </div>
@@ -199,13 +198,13 @@ export default function Home() {
   );
 }
 
-// UPDATED SERVICES WITH IMAGE PATHS
+// UPDATED TO .PNG
 const services = [
-  { title: 'Digital Platforms', image: '/digital-platforms.jpg', items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
-  { title: 'Application Engineering', image: '/application-engineering.jpg', items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
-  { title: 'Enterprise Systems', image: '/enterprise-systems.jpg', items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
-  { title: 'Digital Transformation', image: '/digital-transformation.jpg', items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
-  { title: 'Consulting', image: '/consulting.jpg', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
+  { title: 'Digital Platforms', image: '/digital-platforms.png', items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
+  { title: 'Application Engineering', image: '/application-engineering.png', items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
+  { title: 'Enterprise Systems', image: '/enterprise-systems.png', items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
+  { title: 'Digital Transformation', image: '/digital-transformation.png', items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
+  { title: 'Consulting', image: '/consulting.png', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
@@ -237,11 +236,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: { fontSize: '32px', marginBottom: '40px', color: '#3a7ca5', fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' },
   card: { padding: '24px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' },
-  
-  // NEW: IMAGE STYLES
   cardImageContainer: { marginBottom: '20px', textAlign: 'center', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '10px' },
   cardImage: { maxWidth: '100%', height: '140px', objectFit: 'contain' },
-  
   cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700 },
   list: { listStyleType: 'none', padding: 0, opacity: 0.8, fontSize: '14px' },
   listItem: { marginBottom: '10px' },
