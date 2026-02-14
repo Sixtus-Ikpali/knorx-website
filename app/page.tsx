@@ -15,13 +15,13 @@ import {
   Database,
   Lock,
   Settings,
-  ShieldCheck
+  ShieldCheck,
+  Loader2
 } from 'lucide-react';
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
   const [year, setYear] = useState<number>(2026);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -29,19 +29,10 @@ export default function Home() {
     setYear(new Date().getFullYear());
   }, []);
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [isMobileMenuOpen]);
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setSuccess(false);
-    setError(null);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -57,7 +48,7 @@ export default function Home() {
       setSuccess(true);
       form.reset();
     } catch (err: any) {
-      setError('Something went wrong.');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -73,32 +64,31 @@ export default function Home() {
           .desktop-nav { display: none !important; }
           .mobile-toggle { display: block !important; }
         }
-        @media (min-width: 769px) {
-          .desktop-nav { display: flex !important; }
-          .mobile-toggle { display: none !important; }
-        }
 
-        /* HEADER LINK HOVERS */
+        /* HEADER & LINK HOVERS */
         .nav-link {
-          transition: all 0.3s ease !important;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
           display: inline-block;
+          position: relative;
         }
         .nav-link:hover {
           color: #3a7ca5 !important;
-          transform: translateY(-2px);
+          transform: translateY(-3px);
         }
 
-        /* GET STARTED BUTTON HOVER */
-        .nav-btn:hover {
+        /* BUTTON HOVERS */
+        .btn-interact {
+          transition: all 0.3s ease !important;
+        }
+        .btn-interact:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(58, 124, 165, 0.4);
-          background-color: #4a8db5 !important;
+          box-shadow: 0 8px 20px rgba(58, 124, 165, 0.3);
+          filter: brightness(1.1);
         }
 
-        /* SERVICE CARD & ICON HOVER */
+        /* SERVICE CARD & ICON (WHITE HOVER) */
         .service-card {
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-          cursor: pointer;
         }
         .service-icon {
           transition: all 0.4s ease !important;
@@ -110,11 +100,11 @@ export default function Home() {
           border-color: #3a7ca5 !important;
         }
         .service-card:hover .service-icon {
-          transform: scale(1.2) rotate(5deg);
-          color: #4ade80; /* Changes to a success green on hover */
+          transform: scale(1.15) rotate(8deg);
+          color: #ffffff !important; /* Changed to White per request */
         }
 
-        /* ORBIT ANIMATIONS */
+        /* ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
@@ -131,6 +121,10 @@ export default function Home() {
           0%, 100% { transform: scale(0.9); opacity: 0.5; box-shadow: 0 0 20px #3a7ca5; }
           50% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 50px #3a7ca5; }
         }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
       `}</style>
 
       {/* HEADER */}
@@ -142,7 +136,7 @@ export default function Home() {
           <div className="desktop-nav" style={styles.navLinks}>
             <a href="#about" className="nav-link" style={styles.link}>About</a>
             <a href="#services" className="nav-link" style={styles.link}>Services</a>
-            <a href="#contact" className="nav-btn" style={styles.navButton}>Get Started</a>
+            <a href="#contact" className="btn-interact" style={styles.navButton}>Get Started</a>
           </div>
           <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} style={styles.hamburgerButton}>
              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -166,7 +160,6 @@ export default function Home() {
         
         <div style={styles.orbitContainer}>
           <div style={styles.centralNode}></div>
-          
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite'}}><Code2 size={14} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite', animationDelay: '-2.5s'}}><Lock size={14} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.6)'}}><Globe size={16} color="#fff"/></div>
@@ -177,7 +170,7 @@ export default function Home() {
         </div>
 
         <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
-          <a href="#contact" className="nav-btn" style={styles.heroButton}>Work with Us</a>
+          <a href="#contact" className="btn-interact" style={styles.heroButton}>Work with Us</a>
           <a href="#services" style={styles.heroSecondaryButton}>View Services</a>
         </div>
       </section>
@@ -222,10 +215,15 @@ export default function Home() {
               <input name="name" placeholder="Full Name" required style={styles.input} />
               <input name="email" type="email" placeholder="Email" required style={styles.input} />
               <textarea name="message" placeholder="How can we help?" required style={styles.textarea} />
-              <button type="submit" className="nav-btn" disabled={loading} style={{...styles.button, opacity: loading ? 0.7 : 1}}>
-                {loading ? 'Sending...' : 'Send Message'}
+              <button 
+                type="submit" 
+                className="btn-interact" 
+                disabled={loading} 
+                style={{...styles.button, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px'}}
+              >
+                {loading ? <Loader2 className="animate-spin" size={20} style={{animation: 'spin-slow 1s linear infinite'}} /> : 'Send Message'}
               </button>
-              {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully.</p>}
+              {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully. We'll be in touch soon.</p>}
             </form>
           </div>
         </div>
@@ -284,4 +282,3 @@ const styles: { [key: string]: React.CSSProperties } = {
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
-
