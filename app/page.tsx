@@ -78,6 +78,43 @@ export default function Home() {
           .mobile-toggle { display: none !important; }
         }
 
+        /* HEADER LINK HOVERS */
+        .nav-link {
+          transition: all 0.3s ease !important;
+          display: inline-block;
+        }
+        .nav-link:hover {
+          color: #3a7ca5 !important;
+          transform: translateY(-2px);
+        }
+
+        /* GET STARTED BUTTON HOVER */
+        .nav-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(58, 124, 165, 0.4);
+          background-color: #4a8db5 !important;
+        }
+
+        /* SERVICE CARD & ICON HOVER */
+        .service-card {
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+          cursor: pointer;
+        }
+        .service-icon {
+          transition: all 0.4s ease !important;
+          color: #3a7ca5;
+        }
+        .service-card:hover {
+          transform: translateY(-12px);
+          background-color: rgba(255, 255, 255, 0.08) !important;
+          border-color: #3a7ca5 !important;
+        }
+        .service-card:hover .service-icon {
+          transform: scale(1.2) rotate(5deg);
+          color: #4ade80; /* Changes to a success green on hover */
+        }
+
+        /* ORBIT ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
@@ -94,17 +131,6 @@ export default function Home() {
           0%, 100% { transform: scale(0.9); opacity: 0.5; box-shadow: 0 0 20px #3a7ca5; }
           50% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 50px #3a7ca5; }
         }
-
-        .service-card {
-          transition: all 0.3s ease-in-out !important;
-          cursor: pointer;
-        }
-        .service-card:hover {
-          transform: translateY(-10px);
-          background-color: rgba(255, 255, 255, 0.08) !important;
-          border-color: #3a7ca5 !important;
-          box-shadow: 0 10px 30px rgba(58, 124, 165, 0.2);
-        }
       `}</style>
 
       {/* HEADER */}
@@ -114,9 +140,9 @@ export default function Home() {
             <span style={styles.logoText}>KNORX</span>
           </div>
           <div className="desktop-nav" style={styles.navLinks}>
-            <a href="#about" style={styles.link}>About</a>
-            <a href="#services" style={styles.link}>Services</a>
-            <a href="#contact" style={styles.navButton}>Get Started</a>
+            <a href="#about" className="nav-link" style={styles.link}>About</a>
+            <a href="#services" className="nav-link" style={styles.link}>Services</a>
+            <a href="#contact" className="nav-btn" style={styles.navButton}>Get Started</a>
           </div>
           <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} style={styles.hamburgerButton}>
              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -141,7 +167,6 @@ export default function Home() {
         <div style={styles.orbitContainer}>
           <div style={styles.centralNode}></div>
           
-          {/* Orbit Icons */}
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite'}}><Code2 size={14} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite', animationDelay: '-2.5s'}}><Lock size={14} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.6)'}}><Globe size={16} color="#fff"/></div>
@@ -152,7 +177,7 @@ export default function Home() {
         </div>
 
         <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
-          <a href="#contact" style={styles.heroButton}>Work with Us</a>
+          <a href="#contact" className="nav-btn" style={styles.heroButton}>Work with Us</a>
           <a href="#services" style={styles.heroSecondaryButton}>View Services</a>
         </div>
       </section>
@@ -175,7 +200,7 @@ export default function Home() {
           <div style={styles.grid}>
             {services.map((s, i) => (
               <div key={i} className="service-card" style={styles.card}>
-                <div style={styles.cardImageContainer}>
+                <div className="service-icon" style={styles.cardImageContainer}>
                   {s.icon}
                 </div>
                 <h3 style={styles.cardTitle}>{s.title}</h3>
@@ -197,7 +222,7 @@ export default function Home() {
               <input name="name" placeholder="Full Name" required style={styles.input} />
               <input name="email" type="email" placeholder="Email" required style={styles.input} />
               <textarea name="message" placeholder="How can we help?" required style={styles.textarea} />
-              <button type="submit" disabled={loading} style={{...styles.button, opacity: loading ? 0.7 : 1}}>
+              <button type="submit" className="nav-btn" disabled={loading} style={{...styles.button, opacity: loading ? 0.7 : 1}}>
                 {loading ? 'Sending...' : 'Send Message'}
               </button>
               {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully.</p>}
@@ -230,15 +255,15 @@ const styles: { [key: string]: React.CSSProperties } = {
   mobileMenu: { position: 'fixed', inset: '70px 0 0 0', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', paddingTop: '60px' },
   mobileLink: { fontSize: '20px', color: '#f1f5f9', textDecoration: 'none' },
   mobileButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 40px', borderRadius: '8px', textDecoration: 'none' },
-  link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px', fontWeight: 500 },
-  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600 },
+  link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px', fontWeight: 500, cursor: 'pointer' },
+  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer' },
   hero: { padding: '120px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
   heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
   subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
   orbitContainer: { position: 'relative', width: '350px', height: '350px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' },
   centralNode: { width: '60px', height: '60px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
   orbitNode: { position: 'absolute', width: '36px', height: '36px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
-  heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px' },
+  heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px', cursor: 'pointer' },
   heroSecondaryButton: { border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontSize: '18px' },
   container: { maxWidth: '1200px', margin: '0 auto' },
   section: { padding: '100px 20px' },
@@ -248,7 +273,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: { fontSize: '32px', marginBottom: '40px', color: '#3a7ca5', fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' },
   card: { padding: '24px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' },
-  cardImageContainer: { marginBottom: '20px', textAlign: 'left', color: '#3a7ca5' },
+  cardImageContainer: { marginBottom: '20px', textAlign: 'left' },
   cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700 },
   list: { listStyleType: 'none', padding: 0, opacity: 0.8, fontSize: '14px' },
   listItem: { marginBottom: '10px' },
