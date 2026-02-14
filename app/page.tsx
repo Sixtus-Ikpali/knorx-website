@@ -60,16 +60,22 @@ export default function Home() {
         html {
           scroll-behavior: smooth;
         }
+
+        /* MOBILE VS DESKTOP VISIBILITY */
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-toggle { display: block !important; }
         }
+        @media (min-width: 769px) {
+          .desktop-nav { display: flex !important; }
+          .mobile-toggle { display: none !important; } /* Hidden on desktop */
+        }
 
-        /* HEADER LINK HOVERS - FIXED SPACING */
+        /* HEADER LINK HOVERS & SPACING */
         .nav-link {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
           display: inline-block;
-          margin: 0 15px; /* Forced spacing so they don't touch */
+          margin-right: 25px; /* Creates physical gap between About and Services */
           text-decoration: none;
         }
         .nav-link:hover {
@@ -105,7 +111,7 @@ export default function Home() {
           color: #ffffff !important;
         }
 
-        /* ORBIT ANIMATIONS */
+        /* ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
@@ -249,7 +255,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
   logoContainer: { display: 'flex', alignItems: 'center' },
   logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '22px', letterSpacing: '1.5px' },
-  navLinks: { display: 'flex', alignItems: 'center', gap: '10px' },
+  navLinks: { display: 'flex', alignItems: 'center' },
   hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer' },
   mobileMenu: { position: 'fixed', inset: '70px 0 0 0', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', paddingTop: '60px' },
   mobileLink: { fontSize: '20px', color: '#f1f5f9', textDecoration: 'none' },
@@ -283,4 +289,3 @@ const styles: { [key: string]: React.CSSProperties } = {
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
-
