@@ -1,7 +1,21 @@
-
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
+// NEW: Import professional icons
+import { 
+  Globe, 
+  Cpu, 
+  Layers, 
+  Zap, 
+  MessageSquare,
+  Menu,
+  X,
+  Database,
+  Cloud,
+  Lock,
+  Settings,
+  Code2
+} from 'lucide-react';
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,14 +27,6 @@ export default function Home() {
   useEffect(() => {
     setYear(new Date().getFullYear());
   }, []);
-
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [isMobileMenuOpen]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,13 +44,11 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-
-      if (!response.ok) throw new Error('Failed to send message.');
-
+      if (!response.ok) throw new Error('Failed');
       setSuccess(true);
       form.reset();
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.');
+      setError('Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -57,70 +61,46 @@ export default function Home() {
           .desktop-nav { display: none !important; }
           .mobile-toggle { display: block !important; }
         }
-        @media (min-width: 769px) {
-          .desktop-nav { display: flex !important; }
-          .mobile-toggle { display: none !important; }
-        }
-
-        /* ORBIT ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(75px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
         }
-        @keyframes orbit-mid {
-          from { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
-          to   { transform: rotate(0deg) translateX(110px) rotate(0deg); }
-        }
-        @keyframes orbit-outer {
-          from { transform: rotate(0deg) translateX(145px) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(145px) rotate(-360deg); }
-        }
         @keyframes pulse-glow {
-          0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
+          0%, 100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
           50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 50px #3a7ca5; }
-          100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 20px #3a7ca5; }
         }
 
-        /* SERVICE CARD HOVER EFFECTS */
+        /* UPDATED HOVER: More professional glow */
         .service-card {
-          transition: all 0.3s ease-in-out !important;
-          cursor: pointer;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         }
         .service-card:hover {
-          transform: translateY(-10px);
-          background-color: rgba(255, 255, 255, 0.06) !important;
+          transform: translateY(-12px);
+          background-color: rgba(58, 124, 165, 0.1) !important;
           border-color: #3a7ca5 !important;
-          box-shadow: 0 10px 30px rgba(58, 124, 165, 0.2);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .service-card:hover .icon-wrapper {
+          transform: scale(1.1);
+          color: #fff !important;
+          background: #3a7ca5 !important;
         }
       `}</style>
 
       {/* HEADER */}
       <header style={styles.header}>
         <div style={styles.nav}>
-          <div style={styles.logoContainer}>
-            <span style={styles.logoText}>KNORX</span>
-          </div>
+          <span style={styles.logoText}>KNORX</span>
           <div className="desktop-nav" style={styles.navLinks}>
             <a href="#about" style={styles.link}>About</a>
             <a href="#services" style={styles.link}>Services</a>
             <a href="#contact" style={styles.navButton}>Get Started</a>
           </div>
           <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} style={styles.hamburgerButton}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {isMobileMenuOpen ? <path d="M18 6L6 18M6 6l12 12"/> : <path d="M3 12h18M3 6h18M3 18h18"/>}
-            </svg>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </header>
-
-      {/* MOBILE MENU */}
-      {isMobileMenuOpen && (
-        <div style={styles.mobileMenu}>
-          <a href="#about" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileLink}>About</a>
-          <a href="#services" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileLink}>Services</a>
-          <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} style={styles.mobileButton}>Get Started</a>
-        </div>
-      )}
 
       {/* HERO SECTION */}
       <section style={styles.hero}>
@@ -129,17 +109,12 @@ export default function Home() {
         
         <div style={styles.orbitContainer}>
           <div style={styles.centralNode}></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-inner 6s linear infinite'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-mid 10s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-mid 12s linear infinite', animationDelay: '-5s', backgroundColor: 'rgba(58, 124, 165, 0.2)'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-outer 18s linear infinite'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-outer 22s linear infinite', animationDelay: '-11s', backgroundColor: 'rgba(58, 124, 165, 0.5)'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-          <div style={{...styles.orbitNode, animation: 'orbit-inner 8s linear infinite', animationDelay: '-3s'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1V11a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 6s linear infinite'}}><Code2 size={16} color="#fff"/></div>
+          <div style={{...styles.orbitNode, animation: 'orbit-inner 10s linear infinite', animationDelay: '-2s', backgroundColor: '#3a7ca5'}}><Cloud size={16} color="#fff"/></div>
         </div>
 
         <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
           <a href="#contact" style={styles.heroButton}>Work with Us</a>
-          <a href="#services" style={styles.heroSecondaryButton}>View Services</a>
         </div>
       </section>
 
@@ -154,15 +129,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES SECTION */}
+      {/* SERVICES SECTION - NOW WITH LIVE ICONS */}
       <section id="services" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Our Services</h2>
           <div style={styles.grid}>
             {services.map((s, i) => (
               <div key={i} className="service-card" style={styles.card}>
-                <div style={styles.cardImageContainer}>
-                  <img src={s.image} alt={s.title} style={styles.cardImage} />
+                <div className="icon-wrapper" style={styles.iconWrapper}>
+                  {s.icon}
                 </div>
                 <h3 style={styles.cardTitle}>{s.title}</h3>
                 <ul style={styles.list}>
@@ -174,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* CONTACT */}
       <section id="contact" style={styles.section}>
         <div style={styles.container}>
           <div style={styles.contactContainer}>
@@ -183,11 +158,9 @@ export default function Home() {
               <input name="name" placeholder="Full Name" required style={styles.input} />
               <input name="email" type="email" placeholder="Email" required style={styles.input} />
               <textarea name="message" placeholder="How can we help?" required style={styles.textarea} />
-              <button type="submit" disabled={loading} style={{...styles.button, opacity: loading ? 0.7 : 1}}>
+              <button type="submit" disabled={loading} style={styles.button}>
                 {loading ? 'Sending...' : 'Send Message'}
               </button>
-              {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully.</p>}
-              {error && <p style={{ color: '#f87171', marginTop: '10px' }}>{error}</p>}
             </form>
           </div>
         </div>
@@ -198,28 +171,24 @@ export default function Home() {
   );
 }
 
-// UPDATED TO .PNG
+// SERVICE DATA WITH LIVE ICONS
 const services = [
-  { title: 'Digital Platforms', image: '/digital-platforms.png', items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
-  { title: 'Application Engineering', image: '/application-engineering.png', items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
-  { title: 'Enterprise Systems', image: '/enterprise-systems.png', items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
-  { title: 'Digital Transformation', image: '/digital-transformation.png', items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
-  { title: 'Consulting', image: '/consulting.png', items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
+  { title: 'Digital Platforms', icon: <Globe size={32} />, items: ['Corporate websites', 'Enterprise platforms', 'E-commerce systems'] },
+  { title: 'Application Engineering', icon: <Cpu size={32} />, items: ['Custom web & mobile apps', 'Automation tools', 'SaaS development'] },
+  { title: 'Enterprise Systems', icon: <Layers size={32} />, items: ['ERP implementation', 'Workflow automation', 'Intelligent platforms'] },
+  { title: 'Digital Transformation', icon: <Zap size={32} />, items: ['Strategy & execution', 'Process reengineering', 'End-to-end automation'] },
+  { title: 'Consulting', icon: <MessageSquare size={32} />, items: ['Strategic advisory', 'Execution frameworks', 'Resource optimization'] }
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
   main: { fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#0b1c31', color: '#f1f5f9', minHeight: '100vh', scrollBehavior: 'smooth' },
   header: { padding: '15px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, backgroundColor: 'rgba(11, 28, 49, 0.95)', backdropFilter: 'blur(10px)', zIndex: 100 },
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
-  logoContainer: { display: 'flex', alignItems: 'center' },
   logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '22px', letterSpacing: '1.5px' },
-  navLinks: { gap: '30px', alignItems: 'center' },
-  hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer' },
-  mobileMenu: { position: 'fixed', inset: '70px 0 0 0', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', paddingTop: '60px' },
-  mobileLink: { fontSize: '20px', color: '#f1f5f9', textDecoration: 'none' },
-  mobileButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 40px', borderRadius: '8px', textDecoration: 'none' },
+  navLinks: { display: 'flex', gap: '30px', alignItems: 'center' },
   link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px', fontWeight: 500 },
   navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600 },
+  hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer' },
   hero: { padding: '120px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
   heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
   subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
@@ -227,7 +196,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   centralNode: { width: '50px', height: '50px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
   orbitNode: { position: 'absolute', width: '32px', height: '32px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
   heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px' },
-  heroSecondaryButton: { border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontSize: '18px' },
   container: { maxWidth: '1200px', margin: '0 auto' },
   section: { padding: '100px 20px' },
   aboutSection: { padding: '100px 20px', backgroundColor: 'rgba(255,255,255,0.02)' },
@@ -235,16 +203,15 @@ const styles: { [key: string]: React.CSSProperties } = {
   aboutText: { marginBottom: '20px' },
   sectionTitle: { fontSize: '32px', marginBottom: '40px', color: '#3a7ca5', fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' },
-  card: { padding: '24px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' },
-  cardImageContainer: { marginBottom: '20px', textAlign: 'center', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '10px' },
-  cardImage: { maxWidth: '100%', height: '140px', objectFit: 'contain' },
-  cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700 },
-  list: { listStyleType: 'none', padding: 0, opacity: 0.8, fontSize: '14px' },
+  card: { padding: '40px 30px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' },
+  iconWrapper: { width: '64px', height: '64px', borderRadius: '12px', backgroundColor: 'rgba(58, 124, 165, 0.1)', color: '#3a7ca5', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '25px', transition: 'all 0.3s ease' },
+  cardTitle: { color: '#f1f5f9', marginBottom: '20px', fontWeight: 700, fontSize: '22px' },
+  list: { listStyleType: 'none', padding: 0, opacity: 0.8, fontSize: '15px' },
   listItem: { marginBottom: '10px' },
   contactContainer: { maxWidth: '600px' },
   form: { display: 'flex', flexDirection: 'column', gap: '16px' },
   input: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', outline: 'none' },
-  textarea: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', minHeight: '150px', outline: 'none', fontFamily: 'inherit' },
+  textarea: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', minHeight: '150px', outline: 'none' },
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
