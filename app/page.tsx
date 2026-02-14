@@ -65,11 +65,12 @@ export default function Home() {
           .mobile-toggle { display: block !important; }
         }
 
-        /* HEADER & LINK HOVERS */
+        /* HEADER LINK HOVERS - FIXED SPACING */
         .nav-link {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
           display: inline-block;
-          position: relative;
+          margin: 0 15px; /* Forced spacing so they don't touch */
+          text-decoration: none;
         }
         .nav-link:hover {
           color: #3a7ca5 !important;
@@ -101,10 +102,10 @@ export default function Home() {
         }
         .service-card:hover .service-icon {
           transform: scale(1.15) rotate(8deg);
-          color: #ffffff !important; /* Changed to White per request */
+          color: #ffffff !important;
         }
 
-        /* ANIMATIONS */
+        /* ORBIT ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
@@ -169,7 +170,7 @@ export default function Home() {
           <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite', animationDelay: '-10s', backgroundColor: 'rgba(58, 124, 165, 0.5)'}}><Settings size={18} color="#fff"/></div>
         </div>
 
-        <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
+        <div style={{ marginTop: '50px', display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
           <a href="#contact" className="btn-interact" style={styles.heroButton}>Work with Us</a>
           <a href="#services" style={styles.heroSecondaryButton}>View Services</a>
         </div>
@@ -219,11 +220,11 @@ export default function Home() {
                 type="submit" 
                 className="btn-interact" 
                 disabled={loading} 
-                style={{...styles.button, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px'}}
+                style={{...styles.button, display: 'flex', justifyContent: 'center', alignItems: 'center'}}
               >
-                {loading ? <Loader2 className="animate-spin" size={20} style={{animation: 'spin-slow 1s linear infinite'}} /> : 'Send Message'}
+                {loading ? <Loader2 size={20} style={{animation: 'spin-slow 1s linear infinite'}} /> : 'Send Message'}
               </button>
-              {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully. We'll be in touch soon.</p>}
+              {success && <p style={{ color: '#4ade80', marginTop: '10px' }}>✓ Message sent successfully.</p>}
             </form>
           </div>
         </div>
@@ -248,13 +249,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
   logoContainer: { display: 'flex', alignItems: 'center' },
   logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '22px', letterSpacing: '1.5px' },
-  navLinks: { gap: '30px', alignItems: 'center' },
+  navLinks: { display: 'flex', alignItems: 'center', gap: '10px' },
   hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer' },
   mobileMenu: { position: 'fixed', inset: '70px 0 0 0', backgroundColor: '#0b1c31', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px', paddingTop: '60px' },
   mobileLink: { fontSize: '20px', color: '#f1f5f9', textDecoration: 'none' },
   mobileButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 40px', borderRadius: '8px', textDecoration: 'none' },
   link: { color: '#f1f5f9', textDecoration: 'none', fontSize: '14px', fontWeight: 500, cursor: 'pointer' },
-  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer' },
+  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 18px', borderRadius: '6px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer', marginLeft: '10px' },
   hero: { padding: '120px 20px', textAlign: 'center', background: 'radial-gradient(circle at 50% 50%, #162c46 0%, #0b1c31 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' },
   heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
   subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
@@ -282,3 +283,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
+
