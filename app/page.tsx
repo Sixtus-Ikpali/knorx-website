@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
@@ -43,11 +42,13 @@ export default function Home() {
   return (
     <main style={styles.main}>
       <style jsx global>{`
+        /* Original Orbit Animation */
         @keyframes orbit {
           from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
           to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
         }
         
+        /* The ONLY 'new' addition: The hover lift for cards */
         .service-card {
           transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
         }
@@ -58,7 +59,7 @@ export default function Home() {
         }
       `}</style>
 
-      {/* HEADER */}
+      {/* HEADER - RESTORED */}
       <header style={styles.header}>
         <div style={styles.nav}>
           <span style={styles.logoText}>KNORX</span>
@@ -70,19 +71,21 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO */}
+      {/* HERO - RESTORED TO SINGLE ORBIT */}
       <section style={styles.hero}>
         <h1 style={styles.heading}>Knowledge-Driven Execution for Modern Businesses</h1>
         <p style={styles.subtext}>We design and deliver knowledge-driven digital systems.</p>
         <div style={styles.orbitContainer}>
           <div style={styles.centralNode}></div>
           <div style={{...styles.orbitNode, animation: 'orbit 8s linear infinite'}}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+              <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+            </svg>
           </div>
         </div>
       </section>
 
-      {/* ABOUT SECTION - RESTORED TO YOUR VERSION */}
+      {/* ABOUT SECTION - RESTORED EXACT TEXT */}
       <section id="about" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>About Us</h2>
@@ -97,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES SECTION */}
+      {/* SERVICES SECTION - WITH RECENT ICON UPDATES */}
       <section id="services" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Our Services</h2>
@@ -117,7 +120,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACT */}
+      {/* CONTACT - RESTORED */}
       <section id="contact" style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Contact Us</h2>
@@ -148,15 +151,15 @@ const styles: { [key: string]: React.CSSProperties } = {
   main: { fontFamily: 'Inter, sans-serif', backgroundColor: '#0b1c31', color: '#f1f5f9', minHeight: '100vh' },
   header: { padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)', position: 'sticky', top: 0, backgroundColor: '#0b1c31', zIndex: 10 },
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
-  logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '24px', letterSpacing: '1px' },
+  logoText: { color: '#3a7ca5', fontWeight: 800, fontSize: '24px' },
   navLinks: { display: 'flex', gap: '25px', alignItems: 'center' },
   link: { color: '#fff', textDecoration: 'none', fontSize: '14px' },
-  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 16px', borderRadius: '4px', textDecoration: 'none', fontSize: '14px', fontWeight: 600 },
+  navButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '8px 16px', borderRadius: '4px', textDecoration: 'none', fontSize: '14px' },
   hero: { padding: '100px 20px', textAlign: 'center' },
   heading: { fontSize: '48px', fontWeight: 800, marginBottom: '20px' },
   subtext: { fontSize: '20px', opacity: 0.8, maxWidth: '700px', margin: '0 auto' },
   orbitContainer: { position: 'relative', width: '300px', height: '300px', margin: '60px auto', display: 'flex', justifyContent: 'center', alignItems: 'center' },
-  centralNode: { width: '50px', height: '50px', backgroundColor: '#3a7ca5', borderRadius: '50%', boxShadow: '0 0 20px #3a7ca5' },
+  centralNode: { width: '40px', height: '40px', backgroundColor: '#3a7ca5', borderRadius: '50%' },
   orbitNode: { position: 'absolute', width: '35px', height: '35px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)' },
   section: { padding: '80px 20px' },
   container: { maxWidth: '1200px', margin: '0 auto' },
@@ -167,13 +170,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   card: { padding: '30px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' },
   cardImageContainer: { marginBottom: '20px', textAlign: 'center' },
   cardImage: { maxWidth: '100%', height: '160px', objectFit: 'contain' },
-  cardTitle: { marginBottom: '15px', color: '#f1f5f9' },
+  cardTitle: { marginBottom: '15px' },
   list: { listStyle: 'none', padding: 0, opacity: 0.7 },
   listItem: { marginBottom: '8px', fontSize: '14px' },
   form: { display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '500px' },
   input: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff' },
   textarea: { padding: '14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', minHeight: '120px' },
-  button: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 },
+  button: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px', border: 'none', borderRadius: '8px', cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)' }
 };
 
