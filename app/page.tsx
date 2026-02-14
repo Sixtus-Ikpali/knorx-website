@@ -15,8 +15,7 @@ import {
   Database,
   Lock,
   Settings,
-  ShieldCheck,
-  Server
+  ShieldCheck
 } from 'lucide-react';
 
 export default function Home() {
@@ -68,7 +67,7 @@ export default function Home() {
     <main style={styles.main}>
       <style jsx global>{`
         html {
-          scroll-behavior: smooth; /* Makes the "Live" links slide smoothly */
+          scroll-behavior: smooth;
         }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
@@ -79,7 +78,6 @@ export default function Home() {
           .mobile-toggle { display: none !important; }
         }
 
-        /* DYNAMIC ORBIT ANIMATIONS */
         @keyframes orbit-inner {
           from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
           to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
@@ -135,24 +133,19 @@ export default function Home() {
         </div>
       )}
 
-      {/* HERO SECTION WITH EXPANDED ORBIT */}
+      {/* HERO SECTION */}
       <section style={styles.hero}>
         <h1 style={styles.heading}>Knowledge-Driven Execution for Modern Businesses</h1>
         <p style={styles.subtext}>We design and deliver knowledge-driven digital systems that power operational excellence.</p>
         
         <div style={styles.orbitContainer}>
-          {/* Core */}
           <div style={styles.centralNode}></div>
           
-          {/* Inner Ring (Fast) */}
+          {/* Orbit Icons */}
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite'}}><Code2 size={14} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-inner 5s linear infinite', animationDelay: '-2.5s'}}><Lock size={14} color="#fff"/></div>
-          
-          {/* Mid Ring (Counter-Clockwise) */}
           <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', backgroundColor: 'rgba(58, 124, 165, 0.6)'}}><Globe size={16} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-mid 9s linear infinite', animationDelay: '-4.5s', backgroundColor: 'rgba(58, 124, 165, 0.4)'}}><Database size={16} color="#fff"/></div>
-          
-          {/* Outer Ring (Slow & Large) */}
           <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite'}}><Cloud size={18} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite', animationDelay: '-5s', backgroundColor: 'rgba(58, 124, 165, 0.3)'}}><ShieldCheck size={18} color="#fff"/></div>
           <div style={{...styles.orbitNode, animation: 'orbit-outer 15s linear infinite', animationDelay: '-10s', backgroundColor: 'rgba(58, 124, 165, 0.5)'}}><Settings size={18} color="#fff"/></div>
@@ -243,7 +236,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   heading: { fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: 800, maxWidth: '900px', lineHeight: 1.1 },
   subtext: { marginTop: '24px', fontSize: 'clamp(16px, 4vw, 20px)', opacity: 0.8, maxWidth: '700px' },
   orbitContainer: { position: 'relative', width: '350px', height: '350px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' },
-  centralNode: { width: '60px', height: '60px', backgroundColor: '#3a7ca5', borderRadius: '50%', zCenter: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
+  centralNode: { width: '60px', height: '60px', backgroundColor: '#3a7ca5', borderRadius: '50%', zIndex: 10, animation: 'pulse-glow 3s infinite ease-in-out' },
   orbitNode: { position: 'absolute', width: '36px', height: '36px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', zIndex: 5 },
   heroButton: { backgroundColor: '#3a7ca5', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600, fontSize: '18px' },
   heroSecondaryButton: { border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '16px 32px', borderRadius: '8px', textDecoration: 'none', fontSize: '18px' },
@@ -266,3 +259,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   button: { backgroundColor: '#3a7ca5', padding: '16px', borderRadius: '8px', border: 'none', color: '#ffffff', fontWeight: 600, cursor: 'pointer' },
   footer: { padding: '60px 20px', textAlign: 'center', opacity: 0.5, borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '14px' }
 };
+
