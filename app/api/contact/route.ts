@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     // 2. Send the email
     const { data, error } = await resend.emails.send({
-      from: 'KNORX Contact <onboarding@resend.dev>', // Resend's default test sender
+      from: 'KNORX Technologies <onboarding@resend.dev>', // Resend's default test sender
       to: ['sixtus.ikpali@gmail.com'], // CHANGE THIS to your actual company email address
       subject: `New Inquiry from ${name}`,
       replyTo: email, // This lets you click "Reply" in your inbox to email the user back
