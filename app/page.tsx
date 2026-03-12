@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
@@ -459,7 +460,7 @@ const trustPoints = [
 
 const styles: { [key: string]: React.CSSProperties } = {
   main: {
-    fontFamily: "'DM Sans', system-ui, sans-serif",
+    fontFamily: "'Poppins', system-ui, sans-serif",
     backgroundColor: '#0b1c31',
     color: '#f1f5f9',
     minHeight: '100vh',
@@ -475,7 +476,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' },
   logoContainer: { display: 'flex', flexDirection: 'column', lineHeight: 1 },
-  logoMark: { fontFamily: "'Syne', sans-serif", color: '#4a9cc8', fontWeight: 800, fontSize: '20px', letterSpacing: '2px' },
+  logoMark: { fontFamily: "'Montserrat', sans-serif", color: '#4a9cc8', fontWeight: 800, fontSize: '20px', letterSpacing: '2px' },
   logoSub: { color: 'rgba(255,255,255,0.35)', fontSize: '9px', letterSpacing: '3px', fontWeight: 600, marginTop: '2px' },
   navLinks: { display: 'flex', alignItems: 'center' },
   hamburgerButton: { background: 'none', border: 'none', color: '#f1f5f9', cursor: 'pointer', padding: '4px' },
@@ -502,7 +503,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '6px 16px', borderRadius: '100px', marginBottom: '32px',
   },
   heading: {
-    fontFamily: "'Syne', sans-serif",
+    fontFamily: "'Montserrat', sans-serif",
     fontSize: 'clamp(32px, 5.5vw, 58px)',
     fontWeight: 800, maxWidth: '860px', lineHeight: 1.1, margin: '0 0 20px',
   },
@@ -548,7 +549,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   section: { padding: '100px 24px' },
   sectionLabel: { fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a9cc8', marginBottom: '12px' },
-  sectionTitle: { fontFamily: "'Syne', sans-serif", fontSize: 'clamp(24px, 3vw, 34px)', fontWeight: 800, marginBottom: '48px', color: '#f1f5f9' },
+  sectionTitle: { fontFamily: "'Montserrat', sans-serif", fontSize: 'clamp(24px, 3vw, 34px)', fontWeight: 800, marginBottom: '48px', color: '#f1f5f9' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' },
   card: { padding: '28px', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', flexDirection: 'column' },
   cardIcon: { color: '#3a7ca5', marginBottom: '20px' },
