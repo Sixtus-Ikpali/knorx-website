@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
@@ -62,10 +61,13 @@ export default function Home() {
       {/* ─── HEADER ─── */}
       <header style={styles.header}>
         <div style={styles.nav}>
-          <div style={styles.logoContainer}>
-            <span style={styles.logoMark}>KNORX</span>
-            <span style={styles.logoSub}>TECHNOLOGIES</span>
-          </div>
+          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+            <img src="/logo.png" alt="KNORX Technologies" style={{ height: '44px', width: 'auto' }} />
+            <div style={styles.logoContainer}>
+              <span style={styles.logoMark}>KNORX</span>
+              <span style={styles.logoSub}>TECHNOLOGIES</span>
+            </div>
+          </a>
 
           <div className="desktop-nav" style={styles.navLinks}>
             <a href="#about"    className="nav-link" style={styles.link}>About</a>
@@ -301,9 +303,12 @@ export default function Home() {
         <div style={styles.container}>
           <div className="footer-grid" style={styles.footerGrid}>
             <div>
-              <div style={styles.footerLogo}>
-                <span style={styles.logoMark}>KNORX</span>
-                <span style={{ ...styles.logoSub, fontSize: '10px' }}>TECHNOLOGIES</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                <img src="/logo.png" alt="KNORX Technologies" style={{ height: '40px', width: 'auto' }} />
+                <div style={styles.footerLogo}>
+                  <span style={styles.logoMark}>KNORX</span>
+                  <span style={{ ...styles.logoSub, fontSize: '10px' }}>TECHNOLOGIES</span>
+                </div>
               </div>
               <p style={styles.footerTagline}>
                 Knowledge-driven execution for modern businesses.
