@@ -1,95 +1,103 @@
-
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import { escapeHtml, parseContact, createRateLimiter, type ContactField } from './validation';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const runtime = 'nodejs';
+
+const MAX_BODY_BYTES = 12_000;
+const limiter = createRateLimiter();
+
+function response(error: string, status: number, fields?: Partial<Record<ContactField, string>>) {
+  return NextResponse.json({ error, ...(fields ? { fields } : {}) }, { status });
+}
+
+function configuredEmail(value: string | undefined): value is string {
+  return typeof value === 'string' && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value);
+}
+
+async function readLimitedJson(request: Request): Promise<unknown> {
+  const contentLength = Number(request.headers.get('content-length'));
+  if (contentLength > MAX_BODY_BYTES) throw new Error('body_too_large');
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error('invalid_json');
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > MAX_BODY_BYTES) {
+      await reader.cancel();
+      throw new Error('body_too_large');
+    }
+    chunks.push(value);
+  }
+
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  try {
+    return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+  } catch {
+    throw new Error('invalid_json');
+  }
+}
 
 export async function POST(request: Request) {
+  const ip = request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (!limiter.take(ip)) return response('Too many requests. Please try again later.', 429);
+  if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) return response('Invalid request.', 415);
+
+  let body: unknown;
   try {
-    const { name, company, email, service, message } = await request.json();
+    body = await readLimitedJson(request);
+  } catch (error) {
+    return response('Invalid request.', error instanceof Error && error.message === 'body_too_large' ? 413 : 400);
+  }
 
-    // Validation - only required fields
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
+  const result = parseContact(body);
+  if (!result.ok) return response('Please check the highlighted fields.', 400, result.fields);
+  if (result.value.website) return NextResponse.json({ success: true });
 
-    const { data, error } = await resend.emails.send({
-      from: 'KNORX Technologies <onboarding@resend.dev>',
-      to: ['sixtus.ikpali@gmail.com'],
-      subject: `New Inquiry from ${name}${company ? ` · ${company}` : ''}`,
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.CONTACT_FROM_EMAIL;
+  const to = process.env.CONTACT_TO_EMAIL;
+  if (!apiKey || !configuredEmail(from) || !configuredEmail(to)) {
+    console.error('Contact delivery unavailable: configuration missing or invalid');
+    return response('Message delivery is temporarily unavailable. Please email us directly.', 503);
+  }
+
+  const { name, company, email, service, message } = result.value;
+  const rows = [
+    ['Name', name],
+    ...(company ? [['Company', company]] : []),
+    ['Email', email],
+    ...(service ? [['Service', service]] : []),
+    ['Message', message],
+  ];
+  const html = `<h1>New KNORX website inquiry</h1><table>${rows.map(([label, value]) =>
+    `<tr><th scope="row" style="text-align:left;vertical-align:top;padding:8px">${escapeHtml(label)}</th><td style="padding:8px;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`
+  ).join('')}</table>`;
+
+  try {
+    const { error } = await new Resend(apiKey).emails.send({
+      from: `KNORX Technologies <${from}>`,
+      to: [to],
       replyTo: email,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background: #f9fafb; border-radius: 12px;">
-          <div style="background: #0b1c31; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-            <h1 style="color: #4a9cc8; margin: 0; font-size: 22px; letter-spacing: 2px;">KNORX TECHNOLOGIES</h1>
-            <p style="color: rgba(255,255,255,0.5); margin: 6px 0 0; font-size: 13px;">New website inquiry</p>
-          </div>
-
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; width: 140px;">
-                <strong style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Name</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 15px;">
-                ${name}
-              </td>
-            </tr>
-            ${company ? `
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Company</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 15px;">
-                ${company}
-              </td>
-            </tr>` : ''}
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Email</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 15px;">
-                <a href="mailto:${email}" style="color: #3a7ca5;">${email}</a>
-              </td>
-            </tr>
-            ${service ? `
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Service</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 15px;">
-                ${service}
-              </td>
-            </tr>` : ''}
-            <tr>
-              <td style="padding: 12px 0; vertical-align: top;">
-                <strong style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Message</strong>
-              </td>
-              <td style="padding: 12px 0; color: #111827; font-size: 15px; line-height: 1.7;">
-                ${message.replace(/\n/g, '<br/>')}
-              </td>
-            </tr>
-          </table>
-
-          <div style="margin-top: 32px; padding: 16px; background: #eff6ff; border-radius: 8px; border-left: 4px solid #3a7ca5;">
-            <p style="margin: 0; color: #1e40af; font-size: 13px;">
-              Hit <strong>Reply</strong> to respond directly to ${name} at ${email}
-            </p>
-          </div>
-
-          <p style="margin-top: 24px; color: #9ca3af; font-size: 12px; text-align: center;">
-            Sent from knorx.tech contact form
-          </p>
-        </div>
-      `,
+      subject: 'New KNORX website inquiry',
+      html,
     });
-
     if (error) {
-      return NextResponse.json({ error }, { status: 500 });
+      console.error('Contact delivery failed: provider rejected request');
+      return response('Message delivery is temporarily unavailable. Please email us directly.', 502);
     }
-
-    return NextResponse.json({ success: true, data }, { status: 200 });
-
-  } catch (err: unknown) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ success: true });
+  } catch {
+    console.error('Contact delivery failed: provider request error');
+    return response('Message delivery is temporarily unavailable. Please email us directly.', 502);
   }
 }

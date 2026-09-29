@@ -1,47 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { configuredSiteUrl } from './site-url';
+import { pageMetadata } from './metadata';
+import SiteHeader from './components/SiteHeader';
+import SiteFooter from './components/SiteFooter';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Refresh static routes so the server-derived footer year does not become stale.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'KNORX Technologies | Knowledge-Driven Execution',
-  description: 'Remote-first technology solutions provider specializing in digital platforms, application engineering, and enterprise automation.',
-  openGraph: {
-    title: 'KNORX Technologies',
-    description: 'We help organizations design, automate, and optimize business operations.',
-    url: 'https://your-site.vercel.app', // Update with your actual URL
-    siteName: 'KNORX',
-    images: [
-      {
-        url: '/logo.png', // This uses your logo when the link is shared
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
+  metadataBase: configuredSiteUrl(),
+  ...pageMetadata(
+    'KNORX Technologies | From Complexity to Working Systems',
+    'KNORX Technologies helps startups, businesses, and institutions turn ideas and operational challenges into scalable technology systems.',
+    '/',
+  ),
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const year = new Date().getUTCFullYear();
+  return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to main content</a><SiteHeader />{children}<SiteFooter year={year} /></body></html>;
 }
