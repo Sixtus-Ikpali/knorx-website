@@ -19,7 +19,6 @@ export default function SiteFooter({ year }: { year: number }) {
         </div>
         <div className="footer-column">
           <h2>Company</h2>
-          <Link href="/work">Work</Link>
           <Link href="/approach">Approach</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>

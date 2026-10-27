@@ -27,7 +27,8 @@ test('all primary pages render approved content and contact route', async () => 
   const pages = [HomePage, ServicesPage, WorkPage, ApproachPage, AboutPage, ContactPage];
   const html = pages.map((Page) => renderToStaticMarkup(<Page />));
   assert.match(html[0], /From Complexity to/);
-  assert.match(html[0], /Explore Our Work/);
+  assert.match(html[0], /Built on trust\. Driven by innovation\./);
+  assert.doesNotMatch(html[0], /Explore Our Work|href="\/work"/);
   for (const anchor of ['about', 'services', 'approach', 'contact']) assert.match(html[0], new RegExp(`id="${anchor}"`));
   assert.match(html[1], /Typical Solutions/);
   assert.match(html[2], /Axiora Health/);

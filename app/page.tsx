@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import ProjectCard from './components/ProjectCard';
+import Image from 'next/image';
 import WorkflowVisualization from './components/WorkflowVisualization';
-import { audiences, deliveryStages, principles, projects } from './content';
+import { audiences, deliveryStages, principles } from './content';
 import { serviceCatalog } from './services';
+import { clientOrganizations, knorxProduct } from './showcase';
 
 export default function HomePage() {
   return (
@@ -13,7 +14,7 @@ export default function HomePage() {
             <p className="eyebrow eyebrow-light">Technology consultancy & engineering</p>
             <h1>From Complexity to <span>Working Systems.</span></h1>
             <p className="hero-lead">KNORX Technologies helps startups, businesses, and institutions turn ambitious ideas and operational challenges into scalable technology systems.</p>
-            <div className="action-row"><Link href="/contact" className="button button-primary">Discuss a Project <span aria-hidden="true">↗</span></Link><Link href="/work" className="button button-outline-light">Explore Our Work <span aria-hidden="true">↗</span></Link></div>
+            <div className="action-row"><Link href="/contact" className="button button-primary">Discuss a Project <span aria-hidden="true">↗</span></Link><Link href="/services" className="button button-outline-light">Explore Our Services <span aria-hidden="true">↗</span></Link></div>
           </div>
           <WorkflowVisualization />
         </div>
@@ -35,11 +36,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="work" className="section section-work" aria-labelledby="work-title">
+      <section id="showcase" className="section section-work" aria-labelledby="showcase-title">
         <div className="container">
-          <div className="section-head"><div><p className="eyebrow">03 / Selected work</p><h2 id="work-title">Systems built for real problems.</h2></div><p>From operational systems already running in production to new digital products being engineered from the ground up, our work starts with the problem and ends with purposeful technology.</p></div>
-          <div className="project-grid">{projects.map((project, index) => <ProjectCard key={project.slug} project={project} featured={index === 0} />)}</div>
-          <Link href="/work" className="text-link">Explore Our Work <span aria-hidden="true">↗</span></Link>
+          <div className="section-head"><div><p className="eyebrow">03 / Clients &amp; products</p><h2 id="showcase-title">Built on trust. Driven by innovation.</h2></div><p>We work with organizations to solve operational challenges and build purposeful digital solutions, while developing technology products of our own.</p></div>
+
+          <div className="client-showcase" aria-labelledby="clients-title">
+            <h3 id="clients-title" className="eyebrow">Organizations we&apos;ve worked with</h3>
+            <ul className="client-logo-grid">
+              {clientOrganizations.map((organization) => (
+                <li className="client-logo-item" key={organization.name} tabIndex={0}>
+                  <Image src={organization.logo} alt={`${organization.name} logo`} width={organization.width} height={organization.height} sizes="(max-width: 760px) 245px, 260px" />
+                  <span>{organization.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <article className="product-feature" aria-labelledby="product-title">
+            <div className="product-feature-copy">
+              <p className="eyebrow eyebrow-light">Built by KNORX</p>
+              <h3 id="product-title">{knorxProduct.name}</h3>
+              <p className="product-ownership">A KNORX-owned product</p>
+              <p>{knorxProduct.description}</p>
+              <span className="product-status">{knorxProduct.status}</span>
+            </div>
+            <div className="product-feature-art">
+              <Image src={knorxProduct.logo} alt="Axiora Health logo" width={knorxProduct.width} height={knorxProduct.height} sizes="(max-width: 760px) 280px, 340px" />
+            </div>
+          </article>
         </div>
       </section>
 
