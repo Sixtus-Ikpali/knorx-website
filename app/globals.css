@@ -91,7 +91,8 @@ p { line-height:1.7; }
 .client-logo-item { display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:0; min-height:300px; padding:20px; border:1px solid #cbd9de; background:#fff; text-align:center; transition:border-color .18s ease, background-color .18s ease; }
 .client-logo-item:hover, .client-logo-item:focus-visible { border-color:var(--blue); background:#fbfdfe; }
 .client-logo-item:focus-visible { outline:3px solid #245b7b; outline-offset:3px; }
-.client-logo-item img { display:block; width:min(100%,260px); height:auto; aspect-ratio:1; object-fit:contain; }
+.client-logo-item img { display:block; width:min(100%,180px); height:auto; aspect-ratio:1; object-fit:contain; }
+.client-logo-item:nth-child(2) img { width:min(100%,170px); }
 .client-logo-item span { color:#435767; font-size:12px; font-weight:600; line-height:1.5; }
 .product-feature { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); min-width:0; background:var(--navy); color:#f2f6f8; border:1px solid #2d465c; }
 .product-feature-copy { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; min-width:0; padding:clamp(32px,5vw,70px); }
@@ -101,7 +102,7 @@ p { line-height:1.7; }
 .product-feature-copy .product-ownership { color:#a4cde5; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
 .product-status { display:inline-flex; align-items:center; min-height:30px; margin-top:12px; padding:5px 10px; border:1px solid #bdcdda; color:#f2f6f8; font-size:11px; font-weight:600; letter-spacing:.06em; }
 .product-feature-art { display:flex; align-items:center; justify-content:center; min-width:0; padding:clamp(24px,3vw,44px); border-left:1px solid #2d465c; background:#000; }
-.product-feature-art img { display:block; width:min(100%,340px); height:auto; aspect-ratio:1; object-fit:contain; }
+.product-feature-art img { display:block; width:min(70%,230px); height:auto; aspect-ratio:1; object-fit:contain; }
 
 /* Work page: illustrative process representations, not screenshots */
 .project-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
@@ -271,8 +272,9 @@ p { line-height:1.7; }
   .client-logo-grid { grid-template-columns:1fr; }
   .client-logo-item { min-height:270px; }
   .client-logo-item:last-child { grid-column:auto; width:auto; }
-  .client-logo-item img { width:min(100%,245px); }
-  .product-feature-art img { width:min(100%,280px); }
+  .client-logo-item img { width:min(100%,165px); }
+  .client-logo-item:nth-child(2) img { width:min(100%,155px); }
+  .product-feature-art img { width:min(70%,190px); }
 }
 @media (max-width:390px) {
   .action-row { flex-direction:column; align-items:stretch; }

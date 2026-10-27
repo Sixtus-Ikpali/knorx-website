@@ -45,7 +45,7 @@ export default function HomePage() {
             <ul className="client-logo-grid">
               {clientOrganizations.map((organization) => (
                 <li className="client-logo-item" key={organization.name} tabIndex={0}>
-                  <Image src={organization.logo} alt={`${organization.name} logo`} width={organization.width} height={organization.height} sizes="(max-width: 760px) 245px, 260px" />
+                  <Image src={organization.logo} alt={`${organization.name} logo`} width={organization.width} height={organization.height} sizes="(max-width: 560px) 165px, 180px" />
                   <span>{organization.name}</span>
                 </li>
               ))}
@@ -61,7 +61,7 @@ export default function HomePage() {
               <span className="product-status">{knorxProduct.status}</span>
             </div>
             <div className="product-feature-art">
-              <Image src={knorxProduct.logo} alt="Axiora Health logo" width={knorxProduct.width} height={knorxProduct.height} sizes="(max-width: 760px) 280px, 340px" />
+              <Image src={knorxProduct.logo} alt="Axiora Health logo" width={knorxProduct.width} height={knorxProduct.height} sizes="(max-width: 560px) 190px, 230px" />
             </div>
           </article>
         </div>
